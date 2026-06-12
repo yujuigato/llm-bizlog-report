@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>業務日誌智慧萃取系統｜LLM Pain-Point Intelligence</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    :root{--primary:#7c3aed;--primary-dark:#6d28d9;--primary-light:#f5f3ff;--accent:#2563eb;--success:#059669;--warning:#d97706;--danger:#dc2626;--bg:#f8fafc;--card:#ffffff;--border:#e2e8f0;--text:#0f172a;--text-muted:#64748b;--text-light:#94a3b8;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,'PingFang TC','Microsoft JhengHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;}
+    header{background:linear-gradient(135deg,#4c1d95 0%,#7c3aed 50%,#2563eb 100%);color:white;padding:72px 40px 56px;text-align:center;position:relative;overflow:hidden;}
+    header::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
+    .hero-tag{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:5px 16px;font-size:.85rem;letter-spacing:.05em;margin-bottom:16px;}
+    header h1{font-size:2.4rem;font-weight:800;margin-bottom:16px;line-height:1.2;}
+    header h1 span{color:#c4b5fd;}
+    header .subtitle{font-size:1.1rem;opacity:.85;max-width:640px;margin:0 auto 28px;}
+    .tech-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:32px;}
+    .tech-pill{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:6px 16px;font-size:.85rem;font-weight:500;}
+    .hero-stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;padding-top:24px;border-top:1px solid rgba(255,255,255,0.2);}
+    .hero-stat .num{font-size:2rem;font-weight:800;}
+    .hero-stat .lbl{font-size:.8rem;opacity:.75;margin-top:2px;}
+    main{max-width:960px;margin:0 auto;padding:48px 24px;}
+    section{margin-bottom:56px;}
+    .section-label{font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);margin-bottom:8px;}
+    h2{font-size:1.65rem;font-weight:800;color:var(--text);margin-bottom:8px;line-height:1.3;}
+    .section-desc{font-size:1rem;color:var(--text-muted);margin-bottom:24px;max-width:680px;}
+    h3{font-size:1.05rem;font-weight:700;margin:20px 0 8px;}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+    .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+    .problem-card{border-left:4px solid var(--danger);background:#fff5f5;}
+    .solution-card{border-left:4px solid var(--success);background:#f0fdf4;}
+    .problem-card h3{color:var(--danger);}
+    .solution-card h3{color:var(--success);}
+    .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;}
+    .stat-card{background:var(--primary-light);border-radius:12px;padding:20px;text-align:center;}
+    .stat-card .number{font-size:2rem;font-weight:800;color:var(--primary);}
+    .stat-card .label{font-size:.82rem;color:var(--text-muted);margin-top:4px;}
+    .phase-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;}
+    .phase-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;}
+    .phase-num{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:6px;}
+    .phase-card h4{font-weight:700;font-size:.95rem;margin-bottom:6px;}
+    .phase-card p{font-size:.85rem;color:var(--text-muted);}
+    .mermaid{background:white;border-radius:10px;padding:20px;margin:12px 0;overflow-x:auto;}
+    table{width:100%;border-collapse:collapse;font-size:.92rem;}
+    th{background:#f1f5f9;padding:10px 14px;text-align:left;font-weight:600;border-bottom:2px solid var(--border);}
+    td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;}
+    tr:last-child td{border-bottom:none;}
+    tr:hover td{background:#f8fafc;}
+    .tag{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.8rem;font-weight:600;}
+    .tag-purple{background:#ede9fe;color:#5b21b6;}
+    .tag-blue{background:#dbeafe;color:#1e40af;}
+    .tag-green{background:#dcfce7;color:#166534;}
+    .tag-amber{background:#fef3c7;color:#92400e;}
+    .tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;}
+    .tech-item{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+    .tech-icon{font-size:1.5rem;flex-shrink:0;}
+    .tech-name{font-weight:700;font-size:.9rem;}
+    .tech-desc{font-size:.8rem;color:var(--text-muted);}
+    .bar-row{margin:10px 0;}
+    .bar-label{display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:5px;}
+    .bar-track{background:#e2e8f0;border-radius:6px;height:10px;overflow:hidden;}
+    .bar-fill{height:100%;border-radius:6px;}
+    footer{text-align:center;padding:40px 24px;color:var(--text-muted);font-size:.85rem;border-top:1px solid var(--border);}
+    footer a{color:var(--primary);text-decoration:none;}
+  </style>
+</head>
+<body>
+<header>
+  <div class="hero-tag">🧠 LLM × CRM × 業務智慧</div>
+  <h1>業務日誌智慧萃取系統<br><span>Pain-Point Intelligence Map</span></h1>
+  <p class="subtitle">從 17 萬筆業務日誌中，以 LLM 四階段管道萃取企業痛點、需求與洞察，生成可行動的業務作戰地圖</p>
+  <div class="tech-pills">
+    <span class="tech-pill">Python</span>
+    <span class="tech-pill">Gemini 2.5 Flash</span>
+    <span class="tech-pill">Vertex AI</span>
+    <span class="tech-pill">SQL Server</span>
+    <span class="tech-pill">Scikit-learn</span>
+    <span class="tech-pill">Plotly</span>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">178,790</div><div class="lbl">家企業分析</div></div>
+    <div class="hero-stat"><div class="num">7 層</div><div class="lbl">L1–L7 銷售情報</div></div>
+    <div class="hero-stat"><div class="num">167.6 億</div><div class="lbl">訂單資料規模</div></div>
+    <div class="hero-stat"><div class="num">4 Phase</div><div class="lbl">完整分析管道</div></div>
+  </div>
+</header>
+<main>
+
+<section>
+  <div class="section-label">Background</div>
+  <h2>這個系統在解決什麼問題？</h2>
+  <p class="section-desc">業務人員每天寫日報、做紀錄，但這些寶貴的客戶洞察都散落在非結構化文字中，無法系統性地彙整為可行動的業務情報。</p>
+  <div class="card-grid">
+    <div class="card problem-card">
+      <h3>😣 過去的痛點</h3>
+      <ul style="padding-left:18px;font-size:.92rem;color:#374151;margin-top:8px;">
+        <li style="margin-bottom:8px">17 萬筆業務日誌散落在 CRM，無法快速分析</li>
+        <li style="margin-bottom:8px">企業痛點、需求、洞察靠人工整理，極度耗時</li>
+        <li style="margin-bottom:8px">無法識別哪些企業有高價值需求但尚未跟進</li>
+        <li>業務無法知道同產業客戶的共同痛點在哪</li>
+      </ul>
+    </div>
+    <div class="card solution-card">
+      <h3>✅ 系統如何解決</h3>
+      <ul style="padding-left:18px;font-size:.92rem;color:#374151;margin-top:8px;">
+        <li style="margin-bottom:8px">LLM 自動萃取每家企業的 8 大屬性與 7 層銷售情報</li>
+        <li style="margin-bottom:8px">ML 聚類為 7 種法人類型，找出共同痛點模式</li>
+        <li style="margin-bottom:8px">四路整合生成痛需熱圖與業務推薦卡片</li>
+        <li>訂單時間序列分析，追蹤成交路徑與再購行為</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Pipeline</div>
+  <h2>四階段分析管道</h2>
+  <p class="section-desc">從原始日誌到可行動情報，每個 Phase 各自解決不同層次的問題。</p>
+  <div class="phase-grid">
+    <div class="phase-card">
+      <div class="phase-num">Phase 1</div>
+      <h4>基礎屬性萃取</h4>
+      <p>Gemini 2.5 Flash 從業務日誌萃取 8 大法人基礎屬性，覆蓋 178,790 家企業</p>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">Phase M</div>
+      <h4>法人類型聚類</h4>
+      <p>Scikit-learn 依屬性分群為 7 種法人類型（C0–C6），識別共同痛點模式</p>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">Phase 2</div>
+      <h4>七層情報萃取</h4>
+      <p>LLM 萃取 L1–L7 銷售情報層（痛點 → 需求 → 洞察 → 解決方案），覆蓋 173,376 家</p>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num">Phase 3 / 4</div>
+      <h4>整合與視覺化</h4>
+      <p>四路資料整合生成痛需熱圖、業務推薦卡片；訂單時間序列 Sankey / Sunburst 圖</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Flow</div>
+  <h2>系統流程</h2>
+  <div class="card">
+    <div class="mermaid">
+flowchart TD
+    A[("🗄️ CRM 業務日誌\n17 萬筆")] --> B["Phase 1\n8 大法人基礎屬性萃取\nGemini 2.5 Flash"]
+    B --> C["Phase M\nML 聚類\n7 種法人類型"]
+    B --> D["Phase 2\nL1–L7 七層銷售情報\n173,376 家"]
+    C & D --> E["Phase 3\n四路資料整合\n痛需熱圖 × 推薦卡片"]
+    A2[("🗄️ 訂單資料\n73,934 筆 / 167.6 億")] --> F["Phase 4\n時間序列路徑分析\nSankey / Sunburst"]
+    E & F --> G["📊 業務作戰地圖\nCSV + 互動 HTML"]
+    style B fill:#7c3aed,color:#fff
+    style D fill:#7c3aed,color:#fff
+    style G fill:#059669,color:#fff
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Intelligence Layers</div>
+  <h2>L1–L7 七層銷售情報</h2>
+  <p class="section-desc">每家企業從業務日誌中萃取七個層次的情報，從表面痛點到深層洞察。</p>
+  <div class="card">
+    <table>
+      <tr><th>層級</th><th>內容</th><th>意義</th></tr>
+      <tr><td><span class="tag tag-amber">L1</span></td><td>企業現象描述</td><td>業務觀察到的表面問題</td></tr>
+      <tr><td><span class="tag tag-amber">L2</span></td><td>業務猜測原因</td><td>業務對問題根因的推斷</td></tr>
+      <tr><td><span class="tag tag-blue">L3</span></td><td>客戶表達痛點</td><td>客戶直接陳述的困擾</td></tr>
+      <tr><td><span class="tag tag-blue">L4</span></td><td>客戶未說出的痛點</td><td>行間讀出的隱性需求</td></tr>
+      <tr><td><span class="tag tag-purple">L5</span></td><td>客戶需求/目標</td><td>客戶明確期望達到的狀態</td></tr>
+      <tr><td><span class="tag tag-purple">L6</span></td><td>業務洞察</td><td>業務從互動中獲得的深層理解</td></tr>
+      <tr><td><span class="tag tag-green">L7</span></td><td>解決方案線索</td><td>可對應產品/服務的具體切入點</td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Results</div>
+  <h2>分析規模</h2>
+  <div class="stat-grid" style="margin-bottom:24px;">
+    <div class="stat-card"><div class="number">178,790</div><div class="label">企業完成 Phase 1 屬性萃取</div></div>
+    <div class="stat-card"><div class="number">173,376</div><div class="label">企業完成 L1–L7 情報萃取</div></div>
+    <div class="stat-card"><div class="number">73,934</div><div class="label">筆訂單納入路徑分析</div></div>
+    <div class="stat-card"><div class="number">15+</div><div class="label">CSV 與互動 HTML 輸出</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Tech Stack</div>
+  <h2>技術選型</h2>
+  <div class="tech-grid">
+    <div class="tech-item"><div class="tech-icon">🧠</div><div><div class="tech-name">Gemini 2.5 Flash</div><div class="tech-desc">大規模文字萃取，平衡速度與精度</div></div></div>
+    <div class="tech-item"><div class="tech-icon">🐍</div><div><div class="tech-name">Python + Pandas</div><div class="tech-desc">資料管道與多階段批次處理</div></div></div>
+    <div class="tech-item"><div class="tech-icon">🔬</div><div><div class="tech-name">Scikit-learn</div><div class="tech-desc">K-means 聚類，7 種法人類型識別</div></div></div>
+    <div class="tech-item"><div class="tech-icon">📈</div><div><div class="tech-name">Plotly</div><div class="tech-desc">Sankey / Sunburst 互動式訂單路徑圖</div></div></div>
+    <div class="tech-item"><div class="tech-icon">🗄️</div><div><div class="tech-name">SQL Server</div><div class="tech-desc">CRM 業務日誌與訂單資料來源</div></div></div>
+    <div class="tech-item"><div class="tech-icon">💾</div><div><div class="tech-name">JSON 快取</div><div class="tech-desc">LLM 結果快取，避免重複呼叫</div></div></div>
+  </div>
+</section>
+
+</main>
+<footer>
+  <p>業務日誌智慧萃取系統 &nbsp;|&nbsp; Built with Python + Google Gemini AI &nbsp;|&nbsp; <a href="https://github.com/yujuigato/bizlog-painpoint-map">GitHub</a></p>
+  <p style="margin-top:6px;">最後更新：2026-06-12</p>
+</footer>
+<script>mermaid.initialize({startOnLoad:true,theme:'base',themeVariables:{primaryColor:'#ede9fe',primaryTextColor:'#4c1d95',primaryBorderColor:'#c4b5fd',lineColor:'#64748b'}});</script>
+</body>
+</html>
