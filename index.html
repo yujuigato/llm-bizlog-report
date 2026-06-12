@@ -127,6 +127,22 @@
   <div class="section-label">How It Works</div>
   <h2>系統如何運作？</h2>
   <p class="section-desc">四個階段各自解決不同層次的問題，從原始日誌到可行動情報。</p>
+
+  <div class="highlight-box">
+    <h4>💡 什麼是 L1–L7 七層銷售情報？</h4>
+    <p style="font-size:.92rem;color:#374151;margin-top:6px;">業務日誌通常只記錄表面現象（「客戶說沒預算」），但背後的真實需求可能完全不同。L1–L7 是一套由淺入深的情報萃取框架，讓 AI 從同一份日誌中挖出七個層次的洞察：</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-top:12px;">
+      <div style="background:white;border-radius:8px;padding:10px 12px;border:1px solid #e2e8f0;"><span style="font-weight:700;color:#7c3aed;">L1</span> <span style="font-size:.88rem;">客戶描述的表面現象</span></div>
+      <div style="background:white;border-radius:8px;padding:10px 12px;border:1px solid #e2e8f0;"><span style="font-weight:700;color:#7c3aed;">L2</span> <span style="font-size:.88rem;">業務推測的可能原因</span></div>
+      <div style="background:white;border-radius:8px;padding:10px 12px;border:1px solid #e2e8f0;"><span style="font-weight:700;color:#7c3aed;">L3</span> <span style="font-size:.88rem;">客戶明確說出的痛點</span></div>
+      <div style="background:white;border-radius:8px;padding:10px 12px;border:1px solid #e2e8f0;"><span style="font-weight:700;color:#7c3aed;">L4</span> <span style="font-size:.88rem;">未明說的隱性痛點</span></div>
+      <div style="background:white;border-radius:8px;padding:10px 12px;border:1px solid #e2e8f0;"><span style="font-weight:700;color:#7c3aed;">L5</span> <span style="font-size:.88rem;">客戶想達成的目標</span></div>
+      <div style="background:white;border-radius:8px;padding:10px 12px;border:1px solid #e2e8f0;"><span style="font-weight:700;color:#7c3aed;">L6</span> <span style="font-size:.88rem;">對業務有用的洞察</span></div>
+      <div style="background:white;border-radius:8px;padding:10px 12px;border:1px solid #e2e8f0;"><span style="font-weight:700;color:#7c3aed;">L7</span> <span style="font-size:.88rem;">具體的解決方案線索</span></div>
+    </div>
+    <p style="font-size:.85rem;color:#6d28d9;margin-top:10px;">→ AiGP 卡關分析系統也使用同一套 L1–L7 作為 AI 生成話術的輸入素材</p>
+  </div>
+
   <div class="card" style="margin-bottom:24px;">
     <div class="mermaid">
 flowchart TD
@@ -153,9 +169,9 @@ flowchart TD
     <div class="step">
       <div class="step-left"><div class="step-num">M</div><div class="step-line"></div></div>
       <div class="step-body">
-        <h4>Phase M：法人類型聚類</h4>
-        <p>Scikit-learn K-means 依屬性將企業分為 7 種法人類型（C0–C6），找出同類型企業的共同痛點模式。</p>
-        <div class="step-detail">相同法人類型的客戶通常有相似的卡關原因和需求，業務可以複製同類型的成功話術</div>
+        <h4>Phase M：法人類型聚類（Machine Learning）</h4>
+        <p>Scikit-learn K-means 依萃取出的 8 大屬性，自動將企業分為 7 種法人類型（C0–C6），找出同類型企業的共同痛點模式。</p>
+        <div class="step-detail">「M」代表 Machine Learning 聚類。與 Phase 1/2 並行執行，不依序。相同法人類型的客戶通常有相似的卡關原因，業務可以複製同類型的成功話術給新客戶</div>
       </div>
     </div>
     <div class="step">
@@ -223,11 +239,21 @@ flowchart TD
 <section>
   <div class="section-label">Results</div>
   <h2>分析規模與成果</h2>
-  <div class="stat-grid">
+  <div class="stat-grid" style="margin-bottom:24px;">
     <div class="stat-card"><div class="number">178,790</div><div class="label">企業完成屬性萃取</div></div>
     <div class="stat-card"><div class="number">173,376</div><div class="label">企業完成 L1–L7 情報</div></div>
     <div class="stat-card"><div class="number">7 種</div><div class="label">法人類型識別</div></div>
     <div class="stat-card"><div class="number">15+</div><div class="label">CSV 與互動 HTML 輸出</div></div>
+  </div>
+  <div class="card">
+    <h3>輸出產物說明</h3>
+    <table>
+      <tr><th>輸出名稱</th><th>說明</th><th>對業務的價值</th></tr>
+      <tr><td><strong>痛需熱圖</strong></td><td>橫軸=痛點類別、縱軸=企業規模/產業，顏色=熱度高低</td><td>看出哪些產業在哪些痛點上最集中，快速找到市場缺口</td></tr>
+      <tr><td><strong>業務推薦卡片</strong></td><td>每家企業 1 張卡片，整合 L1–L7 + 建議話術方向</td><td>業務拜訪前 30 秒看完，知道這家公司的關鍵痛點和切入角度</td></tr>
+      <tr><td><strong>訂單路徑 Sankey 圖</strong></td><td>互動式桑基圖，呈現產品組合的成交路徑</td><td>看出「買 A 之後最容易加買 B」，找出交叉銷售機會</td></tr>
+      <tr><td><strong>法人聚類分群結果</strong></td><td>7 種法人類型的雷達圖與特徵描述</td><td>同類型新客戶可直接套用同類型的成功策略</td></tr>
+    </table>
   </div>
 </section>
 
